@@ -133,6 +133,9 @@ class NingUser(NingResource):
 class NingVideo(NingResource):
     resource_type = "Video"
 
+class NingTopic(NingResource):
+    resource_type = "Topic"
+
 
 class NingComment(NingWriteResource):
     resource_type = "Comment"
@@ -185,6 +188,7 @@ service_directory = {
         "token": NingToken(),
         "user": NingUser(),
         "video": NingVideo(),
+        "forum": NingTopic(),
         }
 
 
