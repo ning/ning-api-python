@@ -12,9 +12,8 @@ class NingToken(object):
         email = args.pop(0)
         password = args.pop(0)
 
-        _, payload = client.login(email, password)
-        content = json.loads(payload)
-        self.dump(content)
+        content = client.login(email, password)
+        print(content)
 
     def dump(self, content):
         print json.dumps(content, sort_keys=True, indent=4)
@@ -127,8 +126,7 @@ class NingUser(NingResource):
         if options.description:
             resource_fields["statusMessage"] = options.description
 
-        _, payload = client.update(self.resource_type, resource_fields)
-        content = json.loads(payload)
+        content = client.update(self.resource_type, resource_fields)
         self.dump(content)
 
 
@@ -301,8 +299,19 @@ def main():
     host = "https://external.ningapis.com"
     client = ningapi.Client(host, subdomain, consumer, token)
 
-    resource_name = args.pop(0)
-    action_name = args.pop(0)
+    try:
+        resource_name = args.pop(0)
+    except IndexError:
+        # TODO: Output list of available resources
+        print "Missing resource name"
+        return
+
+    try:
+        action_name = args.pop(0)
+    except IndexError:
+        # TODO: Output list of available options
+        print "Missing action name"
+        return
 
     resource = service_directory.get(resource_name, None)
     if not resource:
@@ -314,7 +323,10 @@ def main():
         print "Invalid action for %s: %s" % (action_name, resource_name)
         return
 
-    action(client, options, args)
+    try:
+        action(client, options, args)
+    except ningapi.NingError, e:
+        print "Ning Error: %s" % str(e)
 
 
 if __name__ == "__main__":
