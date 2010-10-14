@@ -60,7 +60,7 @@ class Client(object):
                 else:
                     raise NingError(int(resp['status']),
                         "HTTP response %s and %s" % (resp, content))
-            except:
+            except ValueError:
                 raise NingError(int(resp['status']),
                     "HTTP response %s and %s" % (resp, content))
 
