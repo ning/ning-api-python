@@ -5,7 +5,7 @@ import basetest
 class TestUsers(basetest.BaseTestCase):
 
     def test_get_users(self):
-        fields = ["email", "birthdate", "location", "author.fullName",
+        fields = ["birthdate", "location", "author.fullName",
             "author.iconUrl"]
         attrs = self.field_args(fields)
         attrs['count'] = 2

@@ -33,6 +33,9 @@ class NingError(Exception):
 
 
 class Client(object):
+    
+    SECURE_PROTOCOL = "https://"
+    INSECURE_PROTOCOL = "http://"
 
     def __init__(self, host, network, consumer, token=None, screenName=None):
 
@@ -43,8 +46,15 @@ class Client(object):
         self.screenName = screenName
         self.method = oauth.SignatureMethod_HMAC_SHA1()
 
-    def call(self, url, method="GET", body=None, token=None, headers=None):
-        url = '%s/xn/rest/%s/1.0/%s' % (self.host, self.network, url)
+    def call(self, url, method="GET", body=None, token=None, headers=None,
+        secure=False):
+        
+        if secure:
+            protocol = self.SECURE_PROTOCOL
+        else:
+            protocol = self.INSECURE_PROTOCOL
+
+        url = '%s%s/xn/rest/%s/1.0/%s' % (protocol, self.host, self.network, url)
         self.client = oauth.Client(self.consumer, token)
         if self.method is not None:
             self.client.set_signature_method(self.method)
@@ -112,7 +122,7 @@ class Client(object):
         info = self.call("Token", method="POST", headers={
             'Authorization': 'Basic %s' %
                 binascii.b2a_base64('%s:%s' % (login, password)),
-            })
+            }, secure=True)
 
         self.screenName = info['entry']['author']
         self.token = oauth.Token(key=info['entry']['oauthToken'],
