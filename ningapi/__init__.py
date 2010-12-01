@@ -49,6 +49,9 @@ class Client(object):
     def call(self, url, method="GET", body=None, token=None, headers=None,
         secure=False):
         
+        if self.method.name == 'PLAINTEXT':
+            secure = True
+        
         if secure:
             protocol = self.SECURE_PROTOCOL
         else:
