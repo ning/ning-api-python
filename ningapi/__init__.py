@@ -46,7 +46,7 @@ class Client(object):
         self.screenName = screenName
         self.method = oauth.SignatureMethod_HMAC_SHA1()
 
-    def call(self, url, method="GET", body=None, token=None, headers=None,
+    def call(self, url, method="GET", body='', token=None, headers=None,
         secure=False):
         
         if self.method.name == 'PLAINTEXT':
