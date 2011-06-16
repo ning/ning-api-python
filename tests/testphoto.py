@@ -1,8 +1,14 @@
 import unittest
 import basetest
+import os
+import inspect
+import sys
 
 
 class TestPhotos(basetest.BaseTestCase):
+
+    def sample_image_path(self):
+        return os.path.join(os.path.dirname(inspect.getfile(sys._getframe(1))), "files/sample-image.jpg")
 
     def test_get_photos(self):
         fields = ["title", "description", "author.fullName", "author.iconUrl"]
@@ -14,7 +20,7 @@ class TestPhotos(basetest.BaseTestCase):
     def test_create_photo(self):
         photo_title = "Photo %s" % self.test_id
         photo_desc = "Python Client test %s" % self.test_id
-        photo_path = "/Users/devin/Pictures/nasa/NASA-23.jpg"
+        photo_path = self.sample_image_path()
         photo_content_type = "image/jpeg"
 
         photo_fields = {
@@ -29,7 +35,7 @@ class TestPhotos(basetest.BaseTestCase):
     def test_update_photo(self):
         photo_title = "Photo %s" % self.test_id
         photo_desc = "Python Client test %s" % self.test_id
-        photo_file = "/Users/devin/Pictures/nasa/NASA-23.jpg"
+        photo_file = self.sample_image_path()
         photo_content_type = "image/jpeg"
 
         photo_fields = {
@@ -53,7 +59,7 @@ class TestPhotos(basetest.BaseTestCase):
     def test_delete_photo(self):
         photo_title = "Photo %s" % self.test_id
         photo_desc = "Python Client test %s" % self.test_id
-        photo_file = "/Users/devin/Pictures/nasa/NASA-23.jpg"
+        photo_file = self.sample_image_path()
         photo_content_type = "image/jpeg"
 
         photo_fields = {
