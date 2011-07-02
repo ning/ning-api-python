@@ -1,0 +1,45 @@
+import unittest
+import basetest
+
+
+class TestListers(basetest.BaseTestCase):
+
+    ITERATE_SIZE = 20
+
+    def test_blog_post_recent(self):
+        from ningapi.listers import BlogPostAccessor
+        lister = BlogPostAccessor(self.api)
+        for blog_post in lister.list_recent(self.ITERATE_SIZE):
+            self.assertIsNotNone(blog_post.title)
+
+    def test_photo_recent(self):
+        from ningapi.listers import PhotoAccessor
+        lister = PhotoAccessor(self.api)
+        for photo in lister.list_recent(self.ITERATE_SIZE):
+            self.assertIsNotNone(photo.title)
+
+    def test_network_alpha(self):
+        from ningapi.listers import NetworkAccessor
+        lister = NetworkAccessor(self.api)
+        for network in lister.list_alpha(self.ITERATE_SIZE):
+            self.assertIsNotNone(network.name)
+
+    def test_user_alpha(self):
+        from ningapi.listers import UserAccessor
+        lister = UserAccessor(self.api)
+        for user in lister.list_alpha(self.ITERATE_SIZE):
+            self.assertIsNotNone(user.full_name)
+
+    def test_user_recent(self):
+        from ningapi.listers import UserAccessor
+        lister = UserAccessor(self.api)
+        for user in lister.list_recent(self.ITERATE_SIZE):
+            self.assertIsNotNone(user.full_name)
+
+
+def suite():
+    return unittest.TestLoader().loadTestsFromTestCase(TestListers)
+
+
+if __name__ == '__main__':
+    unittest.main()
