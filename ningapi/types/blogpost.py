@@ -1,0 +1,32 @@
+from ningapi.types.contentbase import ContentBase
+
+
+class BlogPost(ContentBase):
+
+    field_map = {
+        "id": "id",
+        "author": "author",
+        "createdDate": "created_date",
+        "publishTime": "publish_date",
+        "publishStatus": "publish_status",
+        "updatedDate": "updated_date",
+        "title": "title",
+        "description": "description",
+        "visibility": "visibility",
+        "approved": "approved",
+        "commentCount": "comment_count",
+        "url": "url",
+        "tags": "tags",
+    }
+
+    sub_resources = [
+        "author.fullName",
+        "author.iconUrl",
+        "author.url",
+    ]
+
+    recent_endpoint = "BlogPost/recent"
+    count_endpoint = "BlogPost/count"
+
+    def __init__(self, **kwargs):
+        super(BlogPost, self).__init__(**kwargs)
