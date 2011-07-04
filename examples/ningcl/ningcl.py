@@ -24,12 +24,13 @@ class NingResource(object):
     def list(self, client, options, args, params={}):
         sort = "recent"
 
-        params = {}
-
         if options.count:
             params['count'] = options.count
         if options.fields:
             params['fields'] = options.fields
+        if options.approved is not None:
+            params["approved"] = repr(options.approved).lower()
+
         if options.sort:
             sort = options.sort
 
@@ -46,7 +47,10 @@ class NingResource(object):
         if options.fields:
             params['fields'] = options.fields
 
-        params["id"] = args.pop(0)
+        try:
+            params["id"] = args.pop(0)
+        except IndexError:
+            pass
 
         content = client.get(self.resource_type, params)
         self.dump(content)
@@ -87,6 +91,8 @@ class NingWriteResource(NingResource):
             resource_fields["title"] = options.title
         if options.description:
             resource_fields["description"] = options.description
+        if options.approved is not None:
+            resource_fields["approved"] = repr(options.approved).lower()
 
         content = client.put(self.resource_type, resource_fields)
         self.dump(content)
@@ -123,10 +129,24 @@ class NingUser(NingResource):
         Update the member's status message
         """
 
+        try:
+            resource_fields["id"] = args.pop(0)
+        except IndexError:
+            pass
+
         if options.description:
             resource_fields["statusMessage"] = options.description
+        if options.approved is not None:
+            resource_fields["approved"] = options.approved
+        if options.blocked is not None:
+            resource_fields["isBlocked"] = options.blocked
 
-        content = client.update(self.resource_type, resource_fields)
+        content = client.put(self.resource_type, resource_fields)
+        self.dump(content)
+
+    def delete(self, client, options, args, resource_fields={}):
+        params = {"id": args.pop(0)}
+        content = client.delete(self.resource_type, params)
         self.dump(content)
 
 
@@ -217,7 +237,7 @@ def setup_optparse():
             help="Sort order")
 
     parser.add_option(
-            "-b",
+            "-i",
             "--visibility",
             action="store",
             dest="visibility",
@@ -251,6 +271,34 @@ def setup_optparse():
             action="store",
             dest="email",
             help="Email address of the member")
+
+    parser.add_option(
+            "-a",
+            "--approve",
+            action="store_true",
+            dest="approved",
+            help="Set the item's 'approved' field is set to true or filter out rejected items")
+
+    parser.add_option(
+            "-r",
+            "--reject",
+            action="store_false",
+            dest="approved",
+            help="Set the item's 'approved' field is set to false or filter out accepted items")
+
+    parser.add_option(
+            "-b",
+            "--block",
+            action="store_true",
+            dest="blocked",
+            help="Set the item's 'isBlocked' field is set to true or filter out blocked items")
+
+    parser.add_option(
+            "-u",
+            "--unblock",
+            action="store_false",
+            dest="blocked",
+            help="Set the item's 'isBlocked' field is set to false or filter out un-blocked items")
 
     return parser
 
@@ -300,7 +348,7 @@ def main():
         token = None
 
 
-    host = "https://external.ningapis.com"
+    host = "external.ningapis.com"
     client = ningapi.Client(host, subdomain, consumer, token)
 
     try:
