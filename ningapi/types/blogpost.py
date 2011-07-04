@@ -1,4 +1,5 @@
 from ningapi.types.contentbase import ContentBase
+from ningapi.util import timezone
 
 
 class BlogPost(ContentBase):
@@ -6,10 +7,10 @@ class BlogPost(ContentBase):
     field_map = {
         "id": "id",
         "author": "author",
-        "createdDate": "created_date",
-        "publishTime": "publish_date",
+        "createdDate": ("created_date", timezone.to_datetime),
+        "publishTime": ("publish_date", timezone.to_datetime),
         "publishStatus": "publish_status",
-        "updatedDate": "updated_date",
+        "updatedDate": ("updated_date", timezone.to_datetime),
         "title": "title",
         "description": "description",
         "visibility": "visibility",

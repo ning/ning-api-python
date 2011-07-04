@@ -1,4 +1,5 @@
 from ningapi.types.contentbase import ContentBase
+from ningapi.util import timezone
 
 
 class Activity(ContentBase):
@@ -7,7 +8,7 @@ class Activity(ContentBase):
         "id": "id",
         "author": "author",
         "type": "type",
-        "createdDate": "created_date",
+        "createdDate": ("created_date", timezone.to_datetime),
         "contentId": "content_id",
         "url": "url",
         "title": "title",

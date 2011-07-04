@@ -1,4 +1,5 @@
 from ningapi.types.contentbase import ContentBase
+from ningapi.util import timezone
 
 
 class Photo(ContentBase):
@@ -6,9 +7,9 @@ class Photo(ContentBase):
     field_map = {
         "id": "id",
         "author": "author",
-        "createdDate": "created_date",
-        "updatedDate": "updated_date",
-        "description": "description",
+        "createdDate": ("created_date", timezone.to_datetime),
+        "updatedDate": ("updated_date", timezone.to_datetime),
+        "description": ("description", timezone.to_datetime),
         "attachedTo": "attached_to",
         "attachedToType": "attached_to_type",
         "attachedToAuthor": "attached_to_author",

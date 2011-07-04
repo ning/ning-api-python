@@ -1,4 +1,5 @@
 from ningapi.types.contentbase import ContentBase
+from ningapi.util import timezone
 
 
 class User(ContentBase):
@@ -6,8 +7,8 @@ class User(ContentBase):
     field_map = {
         "id": "id",
         "author": "author",
-        "createdDate": "created_date",
-        "updatedDate": "updated_date",
+        "createdDate": ("created_date", timezone.to_datetime),
+        "updatedDate": ("updated_date", timezone.to_datetime),
         "approved": "approved",
         "visibility": "visibility",
         "url": "url",

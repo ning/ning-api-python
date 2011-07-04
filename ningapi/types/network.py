@@ -1,4 +1,5 @@
 from ningapi.types.contentbase import ContentBase
+from ningapi.util import timezone
 
 
 class Network(ContentBase):
@@ -6,7 +7,7 @@ class Network(ContentBase):
     field_map = {
         "id": "id",
         "author": "author",
-        "createdDate": "created_date",
+        "createdDate": ("created_date", timezone.to_datetime),
         "subdomain": "subdomain",
         "name": "name",
         "iconUrl": "icon_url",

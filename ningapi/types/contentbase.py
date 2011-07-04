@@ -28,8 +28,22 @@ class ContentBase(object):
     @classmethod
     def from_json_dict(cls, json_dict):
 
+        field_dict = {}
+
+        for (k, v) in json_dict.items():
+            map_result = cls.field_map.get(k, k)
+
+            if type(map_result) is tuple:
+                new_name, val_func = map_result
+                new_value = val_func(v)
+            else:
+                new_name = map_result
+                new_value = v
+
+            field_dict[new_name.encode('ascii')] = new_value
+
         # Map the JSON property names to this names used in this class
-        field_dict = dict((cls.field_map.get(k, k), v) for (k, v) \
-                        in json_dict.items())
+        # field_dict = dict((cls.field_map.get(k, k), v) for (k, v) \
+        #                 in json_dict.items())
 
         return cls(**field_dict)
