@@ -15,6 +15,7 @@ except ImportError:
 
 
 class NingError(Exception):
+    """Base exception used for all Ning API errors"""
 
     def __init__(self, status, reason, error_code=None, error_subcode=None,
         trace=None):
@@ -33,9 +34,15 @@ class NingError(Exception):
 
 
 class Client(object):
-    
+    """Helper class that simplifies OAuth requests to the Ning API.
+
+    Additionally it provides a helper method for generating OAuth tokens."""
+
     SECURE_PROTOCOL = "https://"
+    """Protocol used for secure requests"""
+
     INSECURE_PROTOCOL = "http://"
+    """Protocol used for insecure requests"""
 
     def __init__(self, host, network, consumer, token=None, screenName=None):
 
@@ -48,16 +55,18 @@ class Client(object):
 
     def call(self, url, method="GET", body='', token=None, headers=None,
         secure=False):
-        
+        """Makes an authenticated request to the Ning API using OAuth."""
+
         if self.method.name == 'PLAINTEXT':
             secure = True
-        
+
         if secure:
             protocol = self.SECURE_PROTOCOL
         else:
             protocol = self.INSECURE_PROTOCOL
 
-        url = '%s%s/xn/rest/%s/1.0/%s' % (protocol, self.host, self.network, url)
+        url = '%s%s/xn/rest/%s/1.0/%s' % (protocol, self.host, self.network,
+            url)
         self.client = oauth.Client(self.consumer, token)
         if self.method is not None:
             self.client.set_signature_method(self.method)
@@ -80,6 +89,7 @@ class Client(object):
         return json.loads(content)
 
     def post(self, path, body):
+        """Send a POST request to the Ning API."""
         if 'file' in body:
             mp = multipart.Multipart()
             mp.attach(multipart.FilePart({'name': 'file'}, body['file'],
@@ -106,22 +116,27 @@ class Client(object):
                 body=urllib.urlencode(body))
 
     def put(self, path, body):
+        """Send a PUT request to the Ning API."""
         return self.call(path, method="PUT", token=self.token,
             body=urllib.urlencode(body))
 
     def delete(self, path, attrs=None):
+        """Send a DELETE request to the Ning API."""
         if attrs is not None:
             path += ('&' if path.find("?") != -1 else '?') + \
                 urllib.urlencode(attrs)
         return self.call(path, method="DELETE", token=self.token)
 
     def get(self, path, attrs=None):
+        """Send a GET request to the Ning API."""
         if attrs is not None:
             path += ('&' if path.find("?") != -1 else '?') + \
                 urllib.urlencode(attrs)
         return self.call(path, token=self.token)
 
     def login(self, login, password):
+        """Generate an OAuth token using the given email address and password.
+        """
         info = self.call("Token", method="POST", headers={
             'Authorization': 'Basic %s' %
                 binascii.b2a_base64('%s:%s' % (login, password)),
