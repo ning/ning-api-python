@@ -1,4 +1,4 @@
-from ningapi.types import BlogPost, Photo, User, Network
+from ningapi.types import BlogPost, Photo, User, Network, Friend
 
 
 class BaseAccessor(object):
@@ -78,3 +78,12 @@ class UserAccessor(BaseAccessor):
 
         self.list_recent = super(UserAccessor, self).base_lister(
                 User, User.recent_endpoint)
+
+
+class FriendAccessor(BaseAccessor):
+
+    def __init__(self, ning_api):
+        super(FriendAccessor, self).__init__(ning_api)
+
+        self.list_recent = super(FriendAccessor, self).base_lister(
+                Friend, Friend.recent_endpoint)
