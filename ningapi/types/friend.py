@@ -6,6 +6,8 @@ class Friend(ContentBase):
 
     field_map = {
         "author": "author",
+        "friend": "friend",
+        "state": "state",
         "createdDate": ("created_date", timezone.to_datetime),
         "updatedDate": ("updated_date", timezone.to_datetime),
     }
@@ -20,6 +22,7 @@ class Friend(ContentBase):
     ]
 
     recent_endpoint = "Friend/recent"
+    alpha_endpoint = "Friend/alpha"
     count_endpoint = "Friend/count"
 
     def __init__(self, **kwargs):
