@@ -12,10 +12,11 @@ class TestBlogPosts(basetest.BaseTestCase):
         self.assertTrue(content["success"])
 
     def test_create_blog_post(self):
-        blog_fields = {
-                "title": "BlogPost %s" % self.test_id,
-                "description": "Python Client test %s" % self.test_id
-                }
+        blog_fields = [
+            ("title", "BlogPost %s" % self.test_id),
+            ("description", "Python Client test %s" % self.test_id),
+            ("tag", "chicken farm"),
+            ("tag", "cats")]
         content = self.api.post("BlogPost", blog_fields)
         self.assertTrue(content["success"])
 
@@ -33,11 +34,11 @@ class TestBlogPosts(basetest.BaseTestCase):
         blog_id = content["id"]
 
         # Update the blog post
-        blog_fields = {
-                "id": blog_id,
-                "title": "Updated %s" % blog_title,
-                "description": "Updated %s" % blog_desc,
-                }
+        blog_fields = [
+                ("id", blog_id),
+                ("title", "Updated %s" % blog_title),
+                ("description", "Updated %s" % blog_desc),
+                ("tag", "new tag")]
         content = self.api.put("BlogPost", blog_fields)
         self.assertTrue(content["success"])
 
