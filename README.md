@@ -1,16 +1,26 @@
 Overview
 ========
 
-[ning-api-python](https://github.com/ning/ning-api-python) is a Python client
-library for accessing the [Ning API](http://developer.ning.com/).
+[ning-api-python][1] is a Python client library for accessing the [Ning][2]
+API.
 
 The Ning API is a RESTful API that allows developers to access the content on
-their Ning Networks.
+their Ning Networks. The [Ning API Documentation][3] contains a complete API
+reference and tutorials.
 
+
+Support
+=======
+
+If you need help with using this library, you can find us on the [Ning Build
+Network][4]. If you find an issue with this library, please file a bug on our
+[issues page][5].
 
 Example Usage
 =============
 
+A few examples are bellow, but you my also find example usage in the `/tests`
+directory.
 
 Create Token
 ------------
@@ -189,3 +199,10 @@ Delete a photo using the Ning API
 
     if content["success"]:
       print "Photo deleted"
+
+
+[1]: https://github.com/ning/ning-api-python
+[2]: http://www.ning.com/
+[3]: http://developer.ning.com/
+[4]: http://build.ning.com/
+[5]: https://github.com/ning/ning-api-python/issues
