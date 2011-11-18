@@ -1,7 +1,11 @@
 Overview
 ========
 
-A Python client library for accessing the [Ning API](http://developer.ning.com/)
+[ning-api-python](https://github.com/ning/ning-api-python) is a Python client
+library for accessing the [Ning API](http://developer.ning.com/).
+
+The Ning API is a RESTful API that allows developers to access the content on
+their Ning Networks.
 
 
 Example Usage
