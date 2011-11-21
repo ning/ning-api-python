@@ -36,6 +36,12 @@ class TestListers(basetest.BaseTestCase):
         for user in lister.list_recent(self.ITERATE_SIZE):
             self.assertIsNotNone(user.full_name)
 
+    def test_friend_recent(self):
+        from ningapi.access import FriendAccessor
+        lister = FriendAccessor(self.api)
+        for friend in lister.list_recent(self.ITERATE_SIZE):
+            self.assertIsNotNone(friend.friend)
+
 
 def suite():
     return unittest.TestLoader().loadTestsFromTestCase(TestListers)
