@@ -15,7 +15,7 @@ class Photo(ContentBase):
         "approved": "approved",
         "commentCount": "comment_count",
         "url": "url",
-        "tags": "tags",
+        "topTags": "top_tags",
     }
 
     sub_resources = [

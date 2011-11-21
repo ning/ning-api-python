@@ -85,8 +85,5 @@ class FriendAccessor(BaseAccessor):
     def __init__(self, ning_api):
         super(FriendAccessor, self).__init__(ning_api)
 
-        self.list_alpha = super(FriendAccessor, self).base_lister(
-                Friend, Friend.alpha_endpoint)
-
         self.list_recent = super(FriendAccessor, self).base_lister(
                 Friend, Friend.recent_endpoint)

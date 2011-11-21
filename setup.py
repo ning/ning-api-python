@@ -1,8 +1,8 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name="ningapi",
-    version="1.0.1",
+    version="1.0.2",
     author="Ning Inc.",
     author_email="help@ning.com",
     maintainer='Devin Sevilla',

@@ -17,6 +17,7 @@ class TestBlogPosts(basetest.BaseTestCase):
             ("description", "Python Client test %s" % self.test_id),
             ("tag", "chicken farm"),
             ("tag", "cats")]
+
         content = self.api.post("BlogPost", blog_fields)
         self.assertTrue(content["success"])
 
@@ -28,6 +29,7 @@ class TestBlogPosts(basetest.BaseTestCase):
         blog_fields = {
                 "title": blog_title,
                 "description": blog_desc,
+                "tag": "tests",
                 }
         content = self.api.post("BlogPost", blog_fields)
         self.assertTrue(content["success"])
@@ -50,6 +52,7 @@ class TestBlogPosts(basetest.BaseTestCase):
         blog_fields = {
                 "title": blog_title,
                 "description": blog_desc,
+                "tag": "tests",
                 }
         content = self.api.post("BlogPost", blog_fields)
         self.assertTrue(content["success"])

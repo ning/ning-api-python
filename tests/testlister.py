@@ -40,6 +40,7 @@ class TestListers(basetest.BaseTestCase):
         from ningapi.access import FriendAccessor
         lister = FriendAccessor(self.api)
         for friend in lister.list_recent(self.ITERATE_SIZE):
+<<<<<<< HEAD
             self.assertIsNotNone(friend.author)
 
     def test_friend_alpha(self):
@@ -47,6 +48,9 @@ class TestListers(basetest.BaseTestCase):
         lister = FriendAccessor(self.api)
         for friend in lister.list_alpha(self.ITERATE_SIZE):
             self.assertIsNotNone(friend.author)
+=======
+            self.assertIsNotNone(friend.friend)
+>>>>>>> a7d936dfff1a9fd9d535a09d7501dc942592713a
 
 
 def suite():

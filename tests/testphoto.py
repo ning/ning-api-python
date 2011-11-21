@@ -27,7 +27,8 @@ class TestPhotos(basetest.BaseTestCase):
                 "title": photo_title,
                 "description": photo_desc,
                 "file": photo_path,
-                "content_type": photo_content_type
+                "content_type": photo_content_type,
+                "tag": "tests",
                 }
         content = self.api.post("Photo", photo_fields)
         self.assertTrue(content["success"])
@@ -42,7 +43,8 @@ class TestPhotos(basetest.BaseTestCase):
                 "title": photo_title,
                 "description": photo_desc,
                 "file": photo_file,
-                "content_type": photo_content_type
+                "content_type": photo_content_type,
+                "tag": "tests",
                 }
         content = self.api.post("Photo", photo_fields)
         self.assertTrue(content["success"])
@@ -66,7 +68,8 @@ class TestPhotos(basetest.BaseTestCase):
                 "title": photo_title,
                 "description": photo_desc,
                 "file": photo_file,
-                "content_type": photo_content_type
+                "content_type": photo_content_type,
+                "tag": "tests",
                 }
         content = self.api.post("Photo", photo_fields)
         self.assertTrue(content["success"])
