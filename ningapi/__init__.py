@@ -1,11 +1,14 @@
 # Ning XAPI OAuth library
-# Copyright (C) 2010 Ning, Inc.
+# Copyright (C) 2010-2012 Ning, Inc.
 #
 # Depends on python-oauth2 -- http://github.com/simplegeo/python-oauth2
 
 import binascii
+import httplib2
 import multipart
 import oauth2 as oauth
+import socket
+import ssl
 import urllib
 
 try:
@@ -32,6 +35,22 @@ class NingError(Exception):
         else:
             return "%s (%d)" % (self.reason, self.status)
 
+# All Ning connections should go over SSLv3; Python 2.7 sometimes throws exceptions if you don't do this
+class HTTPSConnectionV3(httplib2.HTTPSConnectionWithTimeout):
+    def connect(self):
+        if not hasattr(self, '_tunnel_host'):
+            # old version of Python that doesn't need the hack
+            return httplib2.HTTPSConnectionWithTimeout.connect(self)
+
+        sock = socket.create_connection((self.host, self.port), self.timeout)
+        if self._tunnel_host:
+            self.sock = sock
+            self._tunnel()
+        try:
+            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv3)
+        except ssl.SSLError, e:
+            print("Trying SSLv3.")
+            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv23)
 
 class Client(object):
     """Helper class that simplifies OAuth requests to the Ning API.
@@ -62,8 +81,10 @@ class Client(object):
 
         if secure:
             protocol = self.SECURE_PROTOCOL
+            connection_type = HTTPSConnectionV3
         else:
             protocol = self.INSECURE_PROTOCOL
+            connection_type = None # default
 
         url = '%s%s/xn/rest/%s/1.0/%s' % (protocol, self.host, self.network,
             url)
@@ -72,7 +93,7 @@ class Client(object):
             self.client.set_signature_method(self.method)
 
         resp, content = self.client.request(url, method, headers=headers,
-            body=body)
+            body=body, connection_type=connection_type)
         if int(resp['status']) != 200:
             try:
                 result = json.loads(content)
